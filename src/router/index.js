@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Map from '@/components/Map'
 import Home from '../components/Home'
-
+import Charts from '../components/Chart'
 Vue.use(Router)
 
 export default new Router({
@@ -17,6 +17,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/Charts',
+      name: 'Charts',
+      component: Charts
     }
   ]
 })

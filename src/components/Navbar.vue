@@ -1,5 +1,5 @@
 <template>
-    <div class="hello" style="height: 10vh;">
+    <div class="hello">
         <v-app-bar color="purple" elevation="7" shaped>
             <v-app-bar-nav-icon></v-app-bar-nav-icon>
             <v-toolbar-title>Tower</v-toolbar-title>
@@ -11,7 +11,7 @@
                 style="margin: 10px;">
                 Map
             </v-btn>
-            <v-btn @click="navigate('/Charts')" :disabled="this.currRout === 'Map'" prepend-icon="$vuetify" variant="tonal"
+            <v-btn @click="navigate('/Charts')" :disabled="this.currRout === 'Charts'" prepend-icon="$vuetify" variant="tonal"
                 style="margin: 10px;">
                 Statistics
             </v-btn>
