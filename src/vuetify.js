@@ -1,18 +1,18 @@
-import Vue from "vue";
-import Vuetify from "vuetify";
-import "vuetify/dist/vuetify.min.css"; // Add this line
+// import Vue from "vue";
+// import Vuetify from "vuetify";
+// import "vuetify/dist/vuetify.min.css"; // Add this line
 
-Vue.use(Vuetify);
-const opts = {
-    theme: {
-        dark: false
-    },
-    options: {
-        customProperties: true
-    },
-    icons: {
-        iconfont: "mdi"
-    }
-};
+// Vue.use(Vuetify);
+// const opts = {
+//     theme: {
+//         dark: false
+//     },
+//     options: {
+//         customProperties: true
+//     },
+//     icons: {
+//         iconfont: "mdi"
+//     }
+// };
 
-export default new Vuetify(opts);
+// export default new Vuetify(opts);

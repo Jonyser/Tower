@@ -1,12 +1,14 @@
 <template>
-  <div style="height: 500px; width: 70%, margin:auto;" >
-    <h1>Map Page</h1>
+  <div style="height: 92vh; width: 70%, margin:auto;" >
     <l-map style="height: 100% " :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <!-- <l-marker :lat-lng="markerLatLng"></l-marker> -->
     </l-map>
     <hr>
-    <button @click="GoHome">Go Home</button>
+    <div class="maptitle">
+      <h1 >Map Page</h1>
+    </div>
+    <button @click="GoHome" class="homebutton">Go Home</button>
   </div>
 </template>
 
@@ -34,8 +36,8 @@ export default {
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      zoom: 5,
-      center: [31.673109, 40.125761],
+      zoom: 7,
+      center: [31.4117257 ,35.0818155],
       markerLatLng: [51.504, -0.159]
     }
   },
@@ -49,4 +51,19 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+.homebutton{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  z-index: 400;
+}
+.maptitle{
+
+  position: absolute;
+  top: 8px;
+  left: 55px;
+  font-size: 18px;
+  z-index: 400;
+}
 </style>
