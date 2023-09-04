@@ -1,14 +1,10 @@
 <template>
-  <div style="height: 92vh; width: 70%, margin:auto;">
+  <div style="height: 90vh; width: 70%, margin:auto; overflow: hidden">
     <l-map style="height: 100% " :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      <!-- <l-marker :lat-lng="markerLatLng"></l-marker> -->
+      <l-marker v-for="location in this.locations" :lat-lng="location.markerLatLng"></l-marker>
     </l-map>
     <hr>
-    <div class="maptitle">
-      <h1>Map Page</h1>
-    </div>
-    <v-btn elevation="2" outlined @click="GoHome" class="homebutton" > Go Home</v-btn>
   </div>
 </template>
 
@@ -38,7 +34,8 @@ export default {
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       zoom: 7,
       center: [31.4117257, 35.0818155],
-      markerLatLng: [51.504, -0.159]
+      markerLatLng: [51.504, -0.159],
+      locations: [{ markerLatLng: [32.16406670563115, 34.85262979999999] }, { markerLatLng: [32.10588812178284, 35.17468052785646] }, { markerLatLng: [32.09470124147064, 34.82026944676217] }]
     }
   },
   methods: {
