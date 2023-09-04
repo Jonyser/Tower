@@ -1,9 +1,12 @@
 <template>
   <div style="height: 500px; width: 70%, margin:auto;" >
+    <h1>Map Page</h1>
     <l-map style="height: 100% " :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <!-- <l-marker :lat-lng="markerLatLng"></l-marker> -->
     </l-map>
+    <hr>
+    <button @click="GoHome">Go Home</button>
   </div>
 </template>
 
@@ -35,11 +38,15 @@ export default {
       center: [31.673109, 40.125761],
       markerLatLng: [51.504, -0.159]
     }
+  },
+  methods:{
+    GoHome(){
+      this.$router.push('/')
+    }
   }
 }
 
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 </style>
