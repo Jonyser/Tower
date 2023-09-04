@@ -1,14 +1,14 @@
 <template>
-  <div style="height: 92vh; width: 70%, margin:auto;" >
+  <div style="height: 92vh; width: 70%, margin:auto;">
     <l-map style="height: 100% " :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <!-- <l-marker :lat-lng="markerLatLng"></l-marker> -->
     </l-map>
     <hr>
     <div class="maptitle">
-      <h1 >Map Page</h1>
+      <h1>Map Page</h1>
     </div>
-    <button @click="GoHome" class="homebutton">Go Home</button>
+    <v-btn elevation="2" outlined @click="GoHome" class="homebutton" > Go Home</v-btn>
   </div>
 </template>
 
@@ -37,12 +37,12 @@ export default {
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       zoom: 7,
-      center: [31.4117257 ,35.0818155],
+      center: [31.4117257, 35.0818155],
       markerLatLng: [51.504, -0.159]
     }
   },
-  methods:{
-    GoHome(){
+  methods: {
+    GoHome() {
       this.$router.push('/')
     }
   }
@@ -51,14 +51,15 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-.homebutton{
+.homebutton {
   position: absolute;
   top: 20px;
   right: 20px;
   padding: 10px;
   z-index: 400;
 }
-.maptitle{
+
+.maptitle {
 
   position: absolute;
   top: 8px;
