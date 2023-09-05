@@ -11,12 +11,12 @@
                 style="margin: 10px;">
                 Map
             </v-btn>
-            <v-btn @click="navigate('/Charts')" :disabled="this.currRout === 'Map'" prepend-icon="$vuetify" variant="tonal"
+            <v-btn @click="navigate('/Charts')" :disabled="this.currRout === 'Charts'" prepend-icon="$vuetify" variant="tonal"
                 style="margin: 10px;">
                 Statistics
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn @click="GoToMap" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+            <v-btn  prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
                 Login
             </v-btn>
         </v-app-bar>
@@ -36,10 +36,9 @@ export default {
     },
     methods: {
         navigate(url) {
-            this.$router.push(url)
+            this.$router.push(url).catch(()=>{})
             this.currRout = this.$router.currentRoute.name
         },
-        currRout() { this.$router.currentRoute.name },
     }
 };
 </script>
