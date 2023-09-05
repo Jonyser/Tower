@@ -59,7 +59,7 @@ export default {
 }
 
 </script> -->
- <!-- Add "scoped" attribute to limit CSS to this component only  -->
+<!-- Add "scoped" attribute to limit CSS to this component only  -->
 <!-- <style>
 .homebutton {
   position: absolute;
@@ -79,79 +79,99 @@ export default {
 }
 </style>  -->
 
-
-
-
-
-
-
-
-
 <template>
   <div>
-
-    <v-btn @click="getLocation()" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+    <v-btn
+      @click="getLocation()"
+      prepend-icon="$vuetify"
+      variant="tonal"
+      style="margin: 10px;"
+    >
       Get Location
     </v-btn>
     {{ this.lat }} , {{ this.lng }}
-    <v-btn @click="getLocation(48.866667,2.333333,'Paris')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+    <v-btn
+      @click="getLocation(48.866667, 2.333333, 'Paris')"
+      prepend-icon="$vuetify"
+      variant="tonal"
+      style="margin: 10px;"
+    >
       Paris
     </v-btn>
-    
-    <v-btn @click="getLocation(40.416775,-3.703790,'Madrid')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+
+    <v-btn
+      @click="getLocation(40.416775, -3.70379, 'Madrid')"
+      prepend-icon="$vuetify"
+      variant="tonal"
+      style="margin: 10px;"
+    >
       Madrid
     </v-btn>
-    
-    <div id="mapContainer" ref="mapContainer" style="width: 99%; height: 77vh; margin: 10px"></div>
+
+    <div
+      id="mapContainer"
+      ref="mapContainer"
+      style="width: 99%; height: 77vh; margin: 10px"
+    ></div>
   </div>
 </template>
 <script>
 import L from "leaflet";
+import socket from "../../config/socketService";
 
 export default {
-  mounted:
-    function () {
-      this.map.value = L.map('mapContainer').setView([51.505, -0.09], 13);
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(this.map.value);
+  mounted() {
+    this.map.value = L.map("mapContainer").setView([51.505, -0.09], 13);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(this.map.value);
 
-    },
+    console.log("checkkk");
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket");
+    });
+
+    socket.on("message", data => {
+      console.log("Received message:", data);
+      // Handle incoming messages as needed
+    });
+  },
   data: () => ({
     lng: 0,
     lat: 0,
     map: {}
   }),
   methods: {
-    getLocation(lat,lon, name) {
+    getLocation(lat, lon, name) {
       if (navigator.geolocation) {
-        console.log(lat,lon,name)
-        navigator.geolocation.getCurrentPosition((position) => {
+        console.log(lat, lon, name);
+        navigator.geolocation.getCurrentPosition(position => {
           this.lat = position.coords.latitude;
           this.lng = position.coords.longitude;
-          
-          if(lat != undefined && lon != undefined && name != undefined){
-            this.lat = lat
-            this.lng = lon
+
+          if (lat != undefined && lon != undefined && name != undefined) {
+            this.lat = lat;
+            this.lng = lon;
           }
-          
-          
+
           this.map.value.setView([this.lat, this.lng], 13);
 
-            L.marker([this.lat, this.lng],{draggable : true})
+          L.marker([this.lat, this.lng], { draggable: true })
             .addTo(this.map.value)
-            .on("dragend",(event)=> {
-               console.log(event)
+            .on("dragend", event => {
+              console.log(event);
             });
-
-
         });
       }
     }
   },
-
+  beforeDestroy() {
+    // Disconnect the WebSocket and clean up resources when the component is about to be destroyed
+    console.log("dicsonnnnnn");
+    socket.disconnect();
+  }
 };
 </script>
 
