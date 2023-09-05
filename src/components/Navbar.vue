@@ -16,7 +16,7 @@
                 Statistics
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn @click="GoToMap" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+            <v-btn @click="navigate('/Login')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
                 Login
             </v-btn>
         </v-app-bar>
