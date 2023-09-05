@@ -128,6 +128,7 @@ export default {
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map.value);
 
+    socket.connect();
     console.log("checkkk");
     socket.on("connect", () => {
       console.log("Connected to WebSocket");
