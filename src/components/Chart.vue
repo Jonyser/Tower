@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
 </template>
   
@@ -23,4 +23,4 @@ export default {
         }
     }
 }
-</script>
+</script> -->

@@ -94,8 +94,15 @@ export default {
       Get Location
     </v-btn>
     {{ this.lat }} , {{ this.lng }}
-
-    <div id="mapContainer" ref="mapContainer" style="width: 400px; height: 400px"></div>
+    <v-btn @click="getLocation(48.866667,2.333333,'Paris')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+      Paris
+    </v-btn>
+    
+    <v-btn @click="getLocation(40.416775,-3.703790,'Madrid')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+      Madrid
+    </v-btn>
+    
+    <div id="mapContainer" ref="mapContainer" style="width: 99%; height: 77vh; margin: 10px"></div>
   </div>
 </template>
 <script>
@@ -118,18 +125,26 @@ export default {
     map: {}
   }),
   methods: {
-    getLocation() {
+    getLocation(lat,lon, name) {
       if (navigator.geolocation) {
+        console.log(lat,lon,name)
         navigator.geolocation.getCurrentPosition((position) => {
           this.lat = position.coords.latitude;
           this.lng = position.coords.longitude;
-          // map.value.setView([lat.value, lng.value], 13);
+          
+          if(lat != undefined && lon != undefined && name != undefined){
+            this.lat = lat
+            this.lng = lon
+          }
+          
+          
+          this.map.value.setView([this.lat, this.lng], 13);
 
-          //   L.marker([lat.value, lng.value],{draggable : true})
-          //   .addTo(map.value)
-          //   .on("dragend",(event)=> {
-          //      console.log(event)
-          //   });
+            L.marker([this.lat, this.lng],{draggable : true})
+            .addTo(this.map.value)
+            .on("dragend",(event)=> {
+               console.log(event)
+            });
 
 
         });
