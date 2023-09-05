@@ -1,5 +1,5 @@
 <template>
-    <div class="hello" style="height: 10vh;">
+    <div class="hello">
         <v-app-bar color="purple" elevation="7" shaped>
             <v-app-bar-nav-icon></v-app-bar-nav-icon>
             <v-toolbar-title>Tower</v-toolbar-title>
@@ -16,7 +16,7 @@
                 Statistics
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn  prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+            <v-btn @click="navigate('/Login')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
                 Login
             </v-btn>
         </v-app-bar>
