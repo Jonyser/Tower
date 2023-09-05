@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div style="height: 90vh; width: 70%, margin:auto; overflow: hidden">
     <l-map style="height: 100% " :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -58,7 +58,7 @@ export default {
   }
 }
 
-</script>
+</script> -->
  <!-- Add "scoped" attribute to limit CSS to this component only  -->
 <!-- <style>
 .homebutton {
@@ -77,7 +77,7 @@ export default {
   font-size: 18px;
   z-index: 400;
 }
-</style> 
+</style>  -->
 
 
 
@@ -87,34 +87,35 @@ export default {
 
 
 
+<template>
+  <div>
 
-<!-- <script>
-import { onMounted, ref } from "vue";
+    <v-btn @click="getLocation()" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+      Get Location
+    </v-btn>
+    {{ this.lat }} , {{ this.lng }}
+
+    <div id="mapContainer" ref="mapContainer" style="width: 400px; height: 400px"></div>
+  </div>
+</template>
+<script>
 import L from "leaflet";
 
-let lat = 0;
-let lng = 0;
-const map = ref();
-const mapContainer = ref();
-
-
-
 export default {
-  mounted: 
-    ()=>{
-      console.log(mapContainer)
-  map.value = L.map(mapContainer.value).setView([51.505, -0.09], 13);
-  // console.log(this.mapContainer.value)
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }).addTo(map.value);
+  mounted:
+    function () {
+      this.map.value = L.map('mapContainer').setView([51.505, -0.09], 13);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(this.map.value);
 
-  },
+    },
   data: () => ({
     lng: 0,
-    lat: 0
+    lat: 0,
+    map: {}
   }),
   methods: {
     getLocation() {
@@ -139,17 +140,4 @@ export default {
 };
 </script>
 
-<template>
-  <div>
-
-    <v-btn @click="getLocation()"  prepend-icon="$vuetify" variant="tonal"
-      style="margin: 10px;">
-      Get Location
-    </v-btn>
-    {{ this.lat }} , {{ this.lng }}
-    
-    <div ref="mapContainer" style="width: 400px; height: 400px"></div>
-  </div>
-</template>
-
-<style scoped></style> -->
+<style scoped></style>
