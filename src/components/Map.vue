@@ -50,7 +50,7 @@ export default {
 }
 
 </script> -->
- <!-- Add "scoped" attribute to limit CSS to this component only  -->
+<!-- Add "scoped" attribute to limit CSS to this component only  -->
 <!-- <style>
 .homebutton {
   position: absolute;
@@ -70,21 +70,18 @@ export default {
 }
 </style>  -->
 
-
-
-
-
-
-
-
-
 <template>
   <div>
-
-    <v-btn @click="getLocation()" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+    <v-btn
+      @click="getLocation()"
+      prepend-icon="$vuetify"
+      variant="tonal"
+      style="margin: 10px;"
+    >
       Get Location
     </v-btn>
     {{ this.lat }} , {{ this.lng }}
+    
     <v-btn @click="getLocation(48.866667, 2.333333, 'Paris')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
       Paris
     </v-btn>
@@ -106,6 +103,7 @@ export default {
 
 
     <div id="mapContainer" ref="mapContainer" style="width: 99%; height: 77vh; margin: 10px"></div>
+
   </div>
 </template>
 <script>
@@ -113,7 +111,7 @@ import LMovingMarker from 'vue2-leaflet-movingmarker'
 import L from "leaflet";
 import plane from '../assets/plane.png'
 import shadow from '../assets/leaf-shadow.png'
-
+import socket from "../../config/socketService";
 
 let last_marker = null
 var greenIcon = L.icon({
@@ -144,9 +142,21 @@ export default {
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(this.map.value);
-      this.getLocation()
+       socket.connect();
+    console.log("checkkk");
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket");
+    });
+
+    socket.on("message", data => {
+      console.log("Received message:", data);
+      this.getLocation();
+      // Handle incoming messages as needed
+    });
+      
 
     },
+
   data: () => ({
     lng: 0,
     lat: 0,
@@ -188,6 +198,7 @@ export default {
             // });
 
 
+
         });
       }
     },
@@ -196,6 +207,12 @@ export default {
   components: {
     LMovingMarker
   },
+
+  beforeDestroy() {
+    // Disconnect the WebSocket and clean up resources when the component is about to be destroyed
+    console.log("dicsonnnnnn");
+    socket.disconnect();
+  }
 };
 </script>
 
