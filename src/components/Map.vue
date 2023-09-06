@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div
-      id="mapContainer"
-      ref="mapContainer"
-      style="width: 99%; height: 77vh; margin: 10px"
-    ></div>
+    <div id="mapContainer" ref="mapContainer" style="width: 99%; height: 77vh; margin: 10px"></div>
   </div>
 </template>
 <script>
@@ -17,16 +13,14 @@ import socket from "../../config/socketService";
 let last_marker = {};
 var planeIcon = L.icon({
   iconUrl: plane,
-  shadowUrl: shadow,
-
-  iconSize: [50, 55], // size of the icon
-  shadowSize: [50, 55], // size of the shadow
-  iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-  shadowAnchor: [30, 62] // the same for the shadow
-  // popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+  iconSize: [50, 55]
 });
 
 let planes = {};
+let marker_to_del = null;
+let last_marker_id = 0;
+let markers = {};
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -35,7 +29,7 @@ L.Icon.Default.mergeOptions({
 });
 
 export default {
-  mounted: function() {
+  mounted: function () {
     this.map.value = L.map("mapContainer").setView([51.505, -0.09], 13);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
@@ -43,7 +37,6 @@ export default {
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map.value);
     this.map.value.setView([31.4117257, 35.0818155], 7);
-    // this.Pin_plane()
 
     socket.connect();
     console.log("checkkk");
@@ -62,36 +55,21 @@ export default {
   }),
   methods: {
     Pin_plane(lat, lon, id) {
-      // if (navigator.geolocation) {
-      // navigator.geolocation.getCurrentPosition(position => {
-      //   this.lat = position.coords.latitude;
-      //   this.lng = position.coords.longitude;
-
-      //   if (lat != undefined && lon != undefined && name != undefined) {
-      //     this.lat = lat;
-      //     this.lng = lon;
-      //   }
-      // let plane = {id:[lat,lon]}
 
       planes = { ...planes, [id]: [lat, lon] };
-      if (planes[id].last_marker) {
-        this.map.value.removeLayer(planes[id].last_marker);
+      console.log(markers[id] != undefined, markers[id])
+      
+      if (markers[id] != undefined ) {
+        this.map.value.removeLayer(markers[id][0]);
       }
+      
       last_marker = L.marker(planes[id], {
         icon: planeIcon
       }).addTo(this.map.value);
-      planes = { ...planes, [id]: [[lat, lon, last_marker]] };
-
-      console.log(planes);
-      // L.marker([this.lat, this.lng])
-      //   .addTo(this.map.value);
-      // .on("dragend", (event) => {
-      //   console.log(event)
-      // });
+      markers = { ...markers, [id]: [last_marker] };
+      
     }
-    // }
   },
-  // Icons
   components: {
     LMovingMarker
   }
