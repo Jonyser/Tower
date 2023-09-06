@@ -12,16 +12,7 @@
 <script>
 
 
-var greenIcon = L.icon({
-    iconUrl: 'leaf-green.png',
-    shadowUrl: 'leaf-shadow.png',
 
-    iconSize:     [38, 95], // size of the icon
-    shadowSize:   [50, 64], // size of the shadow
-    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-    shadowAnchor: [4, 62],  // the same for the shadow
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-});
 
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
 
@@ -94,19 +85,55 @@ export default {
       Get Location
     </v-btn>
     {{ this.lat }} , {{ this.lng }}
-    <v-btn @click="getLocation(48.866667,2.333333,'Paris')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+    <v-btn @click="getLocation(48.866667, 2.333333, 'Paris')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
       Paris
     </v-btn>
-    
-    <v-btn @click="getLocation(40.416775,-3.703790,'Madrid')" prepend-icon="$vuetify" variant="tonal" style="margin: 10px;">
+
+    <v-btn @click="getLocation(40.416775, -3.703790, 'Madrid')" prepend-icon="$vuetify" variant="tonal"
+      style="margin: 10px;">
       Madrid
     </v-btn>
     
+    <v-btn @click="getLocation(undefined, undefined, undefined,true,false)" prepend-icon="$vuetify" variant="tonal"
+      style="margin: 10px;">
+      Move
+    </v-btn>
+
+    <v-btn @click="getLocation(undefined, undefined, undefined,false)" prepend-icon="$vuetify" variant="tonal"
+      style="margin: 10px;">
+      Stop Move
+    </v-btn>
+
+
     <div id="mapContainer" ref="mapContainer" style="width: 99%; height: 77vh; margin: 10px"></div>
   </div>
 </template>
 <script>
+import LMovingMarker from 'vue2-leaflet-movingmarker'
 import L from "leaflet";
+import plane from '../assets/plane.png'
+import shadow from '../assets/leaf-shadow.png'
+
+
+let last_marker = null
+var greenIcon = L.icon({
+            iconUrl: plane,
+            shadowUrl: shadow,
+
+            iconSize: [50, 55], // size of the icon
+            shadowSize: [50, 55], // size of the shadow
+            iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [30, 62],  // the same for the shadow
+            // popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+          });
+
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 export default {
   mounted:
@@ -117,6 +144,7 @@ export default {
         attribution:
           '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       }).addTo(this.map.value);
+      this.getLocation()
 
     },
   data: () => ({
@@ -125,33 +153,49 @@ export default {
     map: {}
   }),
   methods: {
-    getLocation(lat,lon, name) {
+    getLocation(lat, lon, name,move) {
       if (navigator.geolocation) {
-        console.log(lat,lon,name)
         navigator.geolocation.getCurrentPosition((position) => {
-          this.lat = position.coords.latitude;
-          this.lng = position.coords.longitude;
-          
-          if(lat != undefined && lon != undefined && name != undefined){
+          if(move != true){
+
+            this.lat = position.coords.latitude;
+            this.lng = position.coords.longitude;
+          }
+
+          if (lat != undefined && lon != undefined && name != undefined) {
             this.lat = lat
             this.lng = lon
           }
-          
-          
+
+
           this.map.value.setView([this.lat, this.lng], 13);
 
-            L.marker([this.lat, this.lng],{draggable : true})
-            .addTo(this.map.value)
-            .on("dragend",(event)=> {
-               console.log(event)
-            });
+          if(move == true){
+            this.lat = this.lat - 0.0045
+            this.lng = this.lng - 0.0045
+            this.map.value.removeLayer(last_marker)
+            console.log(move)
+            
+          }
+          
+          last_marker = L.marker([this.lat,this.lng], { icon: greenIcon }).addTo(this.map.value);
+          if(move == true){this.getLocation(undefined,undefined,undefined,true)}
+
+          // L.marker([this.lat, this.lng])
+          //   .addTo(this.map.value);
+            // .on("dragend", (event) => {
+            //   console.log(event)
+            // });
 
 
         });
       }
-    }
+    },
+    // Icons
   },
-
+  components: {
+    LMovingMarker
+  },
 };
 </script>
 
